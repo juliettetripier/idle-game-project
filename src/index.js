@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './app/App';
 import store from './app/store'
+import { update } from './features/counter/counterSlice';
 import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 
@@ -11,7 +12,7 @@ socket.addEventListener('open', (event) => {
   socket.send('Hi server');
 });
 socket.addEventListener('message', (event) => {
-  console.log(event.data);
+  store.dispatch(update(event.data));
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -15,20 +15,23 @@ const counterSlice = createSlice({
         // by making copies of data and updating those copies.
         // createSlice() lets you write "mutating" update
         // logic that becomes correct immutable updates.
-        increment: (state) => {
-            state.value += 1;
-        },
-        decrement: (state) => {
-            state.value -= 1;
-        },
-        incrementByAmount: (state, action) => {
-            state.value += action.payload;
+        // increment: (state) => {
+        //     state.value += 1;
+        // },
+        // decrement: (state) => {
+        //     state.value -= 1;
+        // },
+        // incrementByAmount: (state, action) => {
+        //     state.value += action.payload;
+        // },
+        update: (state, action) => {
+            state.value = action.payload;
         },
     },
 })
 
 // Generate an action for each case in the reducer function
-export const { increment, decrement, incrementByAmount }
+export const { update }
     = counterSlice.actions;
 
 // Export reducer function
