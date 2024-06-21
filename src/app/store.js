@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../features/counter/counterSlice'
+import clickableReducer from '../features/clickables/clickableSlice'
 
 export default configureStore({
     reducer: {
@@ -11,5 +12,6 @@ export default configureStore({
         // This is telling the store to use the counterReducer
         // function to handle all updates to the counter state.
         counter: counterReducer,
+        clickable: clickableReducer,
     },
 })

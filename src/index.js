@@ -4,6 +4,7 @@ import './index.css';
 import App from './app/App';
 import store from './app/store'
 import { update } from './features/counter/counterSlice';
+import { add } from './features/clickables/clickableSlice';
 import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 
@@ -14,6 +15,9 @@ socket.addEventListener('open', (event) => {
 socket.addEventListener('message', (event) => {
   store.dispatch(update(event.data));
 });
+
+store.dispatch(add([360,360]));
+store.dispatch(add([500,500]));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
