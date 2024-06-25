@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Clickable } from './clickable.js'
 import './clickable.css';
 
@@ -9,7 +9,7 @@ import './clickable.css';
 
 export function Clickables() {
 
-    const clickablesList = useSelector((state) => state.clickable)
+    const clickablesList = useSelector((state) => state.clickable);
 
     return (
         <div>

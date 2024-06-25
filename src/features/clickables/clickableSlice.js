@@ -15,14 +15,11 @@ const clickableSlice = createSlice({
             return [...state, action.payload];
         },
         remove: (state, action) => {
-            const location = action.payload;
-            const index = state.indexOf(location);
+            const index = action.payload;
             if (index === -1) {
-                throw new Error(`index is not in location ${location}`);
+                throw new Error(`${index} not found`);
             };
-            const splice = state.splice(index, 1);
-            console.log(`splice: ${splice}`);
-            return [...state];
+            state.splice(index, 1);
         } 
     },
 })
