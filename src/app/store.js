@@ -1,6 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import createSagaMiddleware from 'redux-saga'
 import counterReducer from '../features/counter/counterSlice'
 import clickableReducer from '../features/clickables/clickableSlice'
+import reduxSaga from 'redux-saga'
+import testSaga from '../sagas/sagas'
+
+const sagaMiddleware = createSagaMiddleware();
 
 export default configureStore({
     reducer: {
@@ -14,4 +19,7 @@ export default configureStore({
         counter: counterReducer,
         clickable: clickableReducer,
     },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
 })
+
+sagaMiddleware.run(testSaga);

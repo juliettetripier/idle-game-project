@@ -15,7 +15,11 @@ const clickableSlice = createSlice({
             return [...state, action.payload];
         },
         remove: (state, action) => {
-            const index = action.payload;
+            const coordinates = action.payload;
+
+            const index = state.findIndex(clickable => 
+                clickable[0] === coordinates[0] && clickable[1] === coordinates[1]);
+
             if (index === -1) {
                 throw new Error(`${index} not found`);
             };
