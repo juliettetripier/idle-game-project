@@ -8,13 +8,13 @@ import { add } from './features/clickables/clickableSlice';
 import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 
-const socket = new WebSocket('/ws')
-socket.addEventListener('open', (event) => {
-  socket.send('Hi server');
-});
-socket.addEventListener('message', (event) => {
-  store.dispatch(update(event.data));
-});
+// const socket = new WebSocket('/ws')
+// socket.addEventListener('open', (event) => {
+//   socket.send('Hi server');
+// });
+// socket.addEventListener('message', (event) => {
+//   store.dispatch(update(event.data));
+// });
 
 store.dispatch(add([360,360]));
 store.dispatch(add([500,500]));
