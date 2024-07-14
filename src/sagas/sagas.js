@@ -1,10 +1,10 @@
 import { eventChannel } from 'redux-saga';
-import { take, put, call, fork } from 'redux-saga/effects';
+import { take, put, call, fork, takeEvery } from 'redux-saga/effects';
 import { update } from '../features/counter/counterSlice';
+import { add, remove } from '../features/clickables/clickableSlice';
 
-function setUpWebSocket() {
+function setUpWebSocket(socket) {
     return eventChannel(emitter => {
-        const socket = new WebSocket('/ws');
         socket.onopen = () => {
             console.log('connection open');
             socket.send('Hi server');
@@ -17,11 +17,11 @@ function setUpWebSocket() {
     });
 }
 
-function* readFromSocket() {
-    const socket = yield call(setUpWebSocket);
+function* readFromSocket(socket) {
+    const socketEventChan = yield call(setUpWebSocket, socket);
     try {
         while (true) {
-            let message = yield take(socket);
+            let message = yield take(socketEventChan);
             yield put(update(message));
         }
     } catch (error) {
@@ -29,13 +29,21 @@ function* readFromSocket() {
     }
 }
 
-function* interceptClickables() {
+function* interceptClickables(socket) {
+    // react to every action that says a clickable has been removed
     console.log("yay it's working");
+    console.log(socket);
+}
+
+function* watchClickables(socket) {
+    // mySlice.actions.myAction.match(action)
+    yield takeEvery(remove, interceptClickables, socket);
 }
 
 export default function* rootSaga() {
-    yield fork(readFromSocket);
-    yield fork(interceptClickables);
+    const socket = new WebSocket('/ws');
+    yield fork(readFromSocket, socket);
+    yield fork(watchClickables, socket);
 }
 
 
