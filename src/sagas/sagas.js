@@ -1,6 +1,6 @@
 import { eventChannel } from 'redux-saga';
-import { call } from 'redux-saga/effects';
-import store from '../app/store';
+import { take, put, call } from 'redux-saga/effects';
+// import store from '../app/store';
 import { update } from '../features/counter/counterSlice';
 
 // create saga that yields dispatched actions when getting websocket message
@@ -16,16 +16,26 @@ function setUpWebSocket() {
         socket.onopen = () => {
             console.log('connection open');
             socket.send('Hi server');
-        }
+        };
         socket.onmessage = (evt) => {
             console.log(evt.data);
-            store.dispatch(update(evt.data));
-        }
-    })
+            // store.dispatch(update(evt.data));
+            emitter(evt.data);
+        };
+        return { emitter, socket };
+    });
 }
 
 function* testSaga() {
-    yield call(setUpWebSocket);
+    const socket = yield call(setUpWebSocket);
+    try {
+        while (true) {
+            let message = yield take(socket);
+            yield put(update(message));
+        }
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 // have saga that takes ws connection and adds event listener to socket
