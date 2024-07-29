@@ -31,8 +31,11 @@ function* readFromSocket(socket) {
 
 function* interceptClickables(socket) {
     // react to every action that says a clickable has been removed
-    console.log("yay it's working");
-    console.log(socket);
+    const message = {
+        type: 'CLICKABLE_REMOVED'
+    };
+    socket.send(message.type);
+    console.log(message.type);
 }
 
 function* watchClickables(socket) {

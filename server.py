@@ -1,6 +1,7 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
+from starlette.websockets import WebSocketDisconnect
 import uvicorn
 import asyncio
 
@@ -42,8 +43,28 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     score = Score()
     score_gen = score.passive_generator()
-    async for score in score_gen:
-        await websocket.send_text(f'{score}')
+
+    async def send_score():
+        try:
+            async for score in score_gen:
+                await websocket.send_text(f'{score}')
+        except asyncio.CancelledError:
+            pass
+    
+    send_score_task = asyncio.create_task(send_score())
+
+    try:
+        while True:
+            message = await websocket.receive_text()
+            print(f'Message: {message}', flush=True)
+    except WebSocketDisconnect:
+        print('Client disconnected')
+    finally:
+        send_score_task.cancel()
+        await send_score_task
+
+
+
 
 
 class Score():
@@ -56,7 +77,6 @@ class Score():
             self.score += 1
             yield self.score
             await asyncio.sleep(1)
-
             
 
 
