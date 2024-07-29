@@ -1,6 +1,6 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.websockets import WebSocketDisconnect
 import uvicorn
 import asyncio
@@ -57,6 +57,9 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             message = await websocket.receive_text()
             print(f'Message: {message}', flush=True)
+            if message == 'CLICKABLE_REMOVED':
+                print('increase score here', flush=True)
+                score.score += 5
     except WebSocketDisconnect:
         print('Client disconnected')
     finally:

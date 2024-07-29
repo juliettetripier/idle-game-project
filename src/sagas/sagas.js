@@ -1,6 +1,6 @@
 import { eventChannel } from 'redux-saga';
 import { take, put, call, fork, takeEvery } from 'redux-saga/effects';
-import { update } from '../features/counter/counterSlice';
+import { incrementByAmount, update } from '../features/counter/counterSlice';
 import { add, remove } from '../features/clickables/clickableSlice';
 
 function setUpWebSocket(socket) {
@@ -36,6 +36,7 @@ function* interceptClickables(socket) {
     };
     socket.send(message.type);
     console.log(message.type);
+    yield put(incrementByAmount(5));
 }
 
 function* watchClickables(socket) {
